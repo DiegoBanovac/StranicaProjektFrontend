@@ -1,4 +1,3 @@
-// Wait until the DOM is fully loaded before running the script
 document.addEventListener("DOMContentLoaded", () => {
   // Get references to DOM elements
   const search = document.querySelector(".input-group input");
@@ -9,26 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const chartSection = document.querySelector(".chart_section");
   const ctx = document.getElementById("myChart").getContext("2d");
   let chart;
-  // Fetch data from the API
-        fetch('https://stranicaprojekt.onrender.com/data')
-          .then(response => response.json())
-          .then(data => {
-            data.forEach(row => {
-              const newRow = dataTable.insertRow();
-              Object.values(row).forEach(cellData => {
-                const newCell = newRow.insertCell();
-                newCell.textContent = cellData;
-              });
-            });
-          })
-          .catch(error => console.error('Error fetching data:', error));
-  // Add event listener for search input
-  search.addEventListener("input", searchTable);
 
   // Function to fetch data from the server
   async function fetchData() {
     try {
-      const response = await fetch("http://localhost:3000/data");
+      const response = await fetch("https://stranicaprojekt.onrender.com/data");
       const data = await response.json();
 
       // Populate the table with fetched data
@@ -238,4 +222,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Fetch data and populate the table on page load
   fetchData();
+  // Add event listener for search input
+  search.addEventListener("input", searchTable);
 });
