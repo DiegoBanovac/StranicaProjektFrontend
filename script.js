@@ -9,7 +9,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const chartSection = document.querySelector(".chart_section");
   const ctx = document.getElementById("myChart").getContext("2d");
   let chart;
-
+  // Fetch data from the API
+        fetch('https://stranicaprojekt.onrender.com/data')
+          .then(response => response.json())
+          .then(data => {
+            data.forEach(row => {
+              const newRow = dataTable.insertRow();
+              Object.values(row).forEach(cellData => {
+                const newCell = newRow.insertCell();
+                newCell.textContent = cellData;
+              });
+            });
+          })
+          .catch(error => console.error('Error fetching data:', error));
   // Add event listener for search input
   search.addEventListener("input", searchTable);
 
