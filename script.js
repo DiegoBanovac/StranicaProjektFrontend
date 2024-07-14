@@ -162,13 +162,13 @@ document.addEventListener("DOMContentLoaded", () => {
           x: {
             title: {
               display: true,
-              text: "Year",
+              text: "Godina",
             },
           },
           y: {
             title: {
               display: true,
-              text: "Number of Immigrants",
+              text: "Broj imigranata",
             },
           },
         },
