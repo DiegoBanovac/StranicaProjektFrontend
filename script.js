@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Get references to DOM elements
   const search = document.querySelector(".input-group input");
   const tableBody = document.querySelector("#dataTable tbody");
   const tableHeadings = document.querySelectorAll("thead th");
@@ -9,13 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const ctx = document.getElementById("myChart").getContext("2d");
   let chart;
 
-  // Function to fetch data from the server
   async function fetchData() {
     try {
       const response = await fetch("https://stranicaprojekt.onrender.com/data");
       const data = await response.json();
 
-      // Populate the table with fetched data
       data.forEach((row) => {
         const tr = document.createElement("tr");
 
@@ -23,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
         countryTd.textContent = row["Country"];
         tr.appendChild(countryTd);
 
-        // Add data for each year
         [
           "2014",
           "2015",
@@ -48,12 +44,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Function to search the table
   function searchTable() {
     const query = search.value.toLowerCase();
     const rows = Array.from(tableBody.querySelectorAll("tr"));
 
-    // Show/hide rows based on the search query
     rows.forEach((row) => {
       const cells = row.querySelectorAll("td");
       const matches = Array.from(cells).some((cell) =>
@@ -66,11 +60,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentSortColumn = null;
   let currentSortOrder = true;
 
-  // Add click event listener for sorting table columns
   tableHeadings.forEach((head, index) => {
     head.onclick = () => {
       if (currentSortColumn !== null && currentSortColumn !== head) {
-        // Reset classes for previously sorted column
+    
         tableHeadings[currentSortColumn].classList.remove("active");
         tableHeadings[currentSortColumn].classList.remove("asc");
         tableHeadings[currentSortColumn].classList.remove("desc");
@@ -79,7 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
       currentSortColumn = index;
       currentSortOrder = !currentSortOrder;
 
-      // Toggle classes for current column
       head.classList.toggle("asc", currentSortOrder);
       head.classList.toggle("desc", !currentSortOrder);
       head.classList.add("active");
@@ -88,29 +80,24 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   });
 
-  // Function to sort the table
   function sortTable(columnIndex, ascending) {
     const rows = Array.from(tableBody.querySelectorAll("tr"));
     const sortedRows = rows.sort((a, b) => {
       const aText = a.querySelectorAll("td")[columnIndex].textContent.trim();
       const bText = b.querySelectorAll("td")[columnIndex].textContent.trim();
 
-      // Compare numeric values if both are numbers
       if (!isNaN(aText) && !isNaN(bText)) {
         return ascending ? aText - bText : bText - aText;
       }
 
-      // Compare string values
       return ascending
         ? aText.localeCompare(bText)
         : bText.localeCompare(aText);
     });
 
-    // Append sorted rows back to the table body
     sortedRows.forEach((row) => tableBody.appendChild(row));
   }
 
-  // Function to generate the chart
   function generateChart() {
     const rows = Array.from(tableBody.querySelectorAll("tr"));
     const labels = [
@@ -127,7 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
     const datasets = [];
 
-    // Create dataset for each country
     rows.forEach((row) => {
       const cells = row.querySelectorAll("td");
       const country = cells[0].textContent;
@@ -140,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
         data: data,
         borderColor: getRandomColor(),
         fill: false,
-        hidden: true, // Start with all datasets hidden
+        hidden: true, 
       });
     });
 
@@ -148,7 +134,6 @@ document.addEventListener("DOMContentLoaded", () => {
       chart.destroy();
     }
 
-    // Initialize the chart
     chart = new Chart(ctx, {
       type: "line",
       data: {
@@ -191,7 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Function to toggle between table and chart views
   function toggleView() {
     const isTableHidden = tableSection.classList.contains("hidden");
 
@@ -207,7 +191,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Function to generate a random color
   function getRandomColor() {
     const letters = "0123456789ABCDEF";
     let color = "#";
@@ -217,11 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return color;
   }
 
-  // Add event listener for the toggle chart button
   toggleChartButton.addEventListener("click", toggleView);
-
-  // Fetch data and populate the table on page load
   fetchData();
-  // Add event listener for search input
   search.addEventListener("input", searchTable);
 });
