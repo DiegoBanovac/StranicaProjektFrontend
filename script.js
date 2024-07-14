@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
           },
           title: {
             display: true,
-            text: "Number of New Immigrants in European Countries (2014-2023)",
+            text: "Broj novih imigranata u drzavama na podruciju Europe u posljednih 10 godina",
           },
         },
         scales: {
